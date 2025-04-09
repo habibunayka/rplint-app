@@ -18,7 +18,7 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.main}>
-            <Animated.View style={[styles.profileContainer, { opacity }]}>
+            <Animated.View style={[styles.profileContainer, { opacity }]}> 
                 <ProfileLayout />
             </Animated.View>
             <ScrollView
@@ -30,7 +30,6 @@ const HomeScreen = () => {
                 )}
             >
                 <View style={styles.container}>
-                    {/* <Header/> */}
                     <AttendanceTime/>
                     <AttendanceCount/>
                     <AttendanceCalendar/>
