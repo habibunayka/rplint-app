@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,106 +11,186 @@ import {
   Keyboard,
   Alert,
   Animated,
-  ActivityIndicator,
+  Image,
+  ScrollView,
+  Dimensions
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import colors from "../colors"; 
 import { StatusBar } from "expo-status-bar";
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const shakeAnim = useRef(new Animated.Value(0)).current;
+
+  const emailLabelAnim = useState(new Animated.Value(0))[0];
+  const passwordLabelAnim = useState(new Animated.Value(0))[0];
+
+  const handleFocus = (labelAnim) => {
+    Animated.timing(labelAnim, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const handleBlur = (labelAnim, value) => {
+    if (value === "") {
+      Animated.timing(labelAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
 
   const handleLogin = () => {
     if (!email || !password) {
-      Animated.sequence([
-        Animated.timing(shakeAnim, { toValue: 10, duration: 100, useNativeDriver: false }),
-        Animated.timing(shakeAnim, { toValue: -10, duration: 100, useNativeDriver: false }),
-        Animated.timing(shakeAnim, { toValue: 0, duration: 100, useNativeDriver: false }),
-      ]).start();
       Alert.alert("Error", "Email dan Password tidak boleh kosong");
       return;
     }
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigation.replace("Main");
-    }, 2000);
+    navigation.replace("Main");
   };
 
+  const getLabelStyle = (labelAnim) => ({
+    top: labelAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [15, -10],
+    }),
+    fontSize: labelAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [18, 14],
+    }),
+    color: labelAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: ["#888", colors.primary],
+    }),
+  });
+
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <LinearGradient colors={["#4c669f", "#3b5998", "#192f6a"]} style={styles.container}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={styles.width}>
+      <KeyboardAvoidingView
+        style={styles.main}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      >
         <StatusBar style="light" />
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inner}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          style={styles.width}
+        >
+          <Image
+            source={require("../../assets/icon.png")} 
+            style={styles.logo}
+          />
           <Text style={styles.title}>Selamat Datang!</Text>
-          <Animated.View style={[styles.inputContainer, { transform: [{ translateX: shakeAnim }] }]}>
+          <Text style={styles.subtitle}>Silakan login ke akun anda</Text>
+
+          <View style={styles.inputContainer}>
+            <Animated.Text style={[styles.label, getLabelStyle(emailLabelAnim)]}>
+              Email
+            </Animated.Text>
             <TextInput
               style={styles.input}
-              placeholder="Email"
-              placeholderTextColor="#aaa"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              onFocus={() => handleFocus(emailLabelAnim)}
+              onBlur={() => handleBlur(emailLabelAnim, email)}
             />
-          </Animated.View>
+          </View>
 
-          <Animated.View style={[styles.inputContainer, { transform: [{ translateX: shakeAnim }] }]}>
+          <View style={styles.inputContainer}>
+            <Animated.Text style={[styles.label, getLabelStyle(passwordLabelAnim)]}>
+              Password
+            </Animated.Text>
             <TextInput
               style={styles.input}
-              placeholder="Password"
-              placeholderTextColor="#aaa"
               value={password}
               onChangeText={setPassword}
               secureTextEntry
+              onFocus={() => handleFocus(passwordLabelAnim)}
+              onBlur={() => handleBlur(passwordLabelAnim, password)}
             />
-          </Animated.View>
+          </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </LinearGradient>
+
+          <TouchableOpacity style={styles.forgotPassword}>
+            <Text style={styles.forgotText}>Lupa Password?</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };
 
+const { height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
-  container: {
+  main: {
     flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    // minHeight: height,
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 40,
+    paddingHorizontal: 30,
+    minHeight: '100%', 
   },
-  inner: {
-    width: "80%",
-    alignItems: "center",
+  logo: {
+    width: '100%',
+    height: 150,
+    marginBottom: 30,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 10,
     color: "white",
-    marginBottom: 20,
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 14,
+    color: "white",
+    marginBottom: 50,
+    textAlign: "center",
   },
   inputContainer: {
     width: "100%",
+    marginBottom: 20,
+    position: "relative",
+  },
+  label: {
+    position: "absolute",
+    left: 15,
     backgroundColor: "white",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    elevation: 5,
+    paddingHorizontal: 5,
+    zIndex: 1,
+    borderRadius: 5,
+    alignItems: 'center',
   },
   input: {
     height: 50,
+    backgroundColor: "white",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    borderColor: "#ddd",
+    borderWidth: 1,
     fontSize: 16,
-    color: "#333",
   },
   button: {
-    backgroundColor: "#ff5a5f",
+    backgroundColor: colors.secondary,
     paddingVertical: 15,
     borderRadius: 10,
     width: "100%",
@@ -123,6 +203,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  forgotPassword: {
+    marginTop: 20,
+  },
+  forgotText: {
+    color: "white",
+    fontSize: 14,
+    textDecorationLine: "underline",
+    marginBottom: 20,
+  },
+  width: {
+    width: '100%'
+  }
 });
 
 export default LoginScreen;

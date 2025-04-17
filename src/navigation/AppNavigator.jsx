@@ -6,8 +6,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SettingScreen from '../screens/SettingScreen'; 
-import AccountSettingsScreen from '../screens/AccountSettingsScreen'; // Impor halaman baru
-import AboutAppScreen from '../screens/AboutAppScreen'; // Impor halaman baru
+import AccountSettingsScreen from '../screens/AccountSettingsScreen';
+import AboutAppScreen from '../screens/AboutAppScreen'; 
 import colors from '../colors';
 
 import 'react-native-gesture-handler';
@@ -118,8 +118,8 @@ const AppNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Main" component={MainTabNavigator} />
-      <Stack.Screen name="AccountSettings" component={AccountSettingsScreen} /> {/* Tambahkan halaman baru */}
-      <Stack.Screen name="AboutApp" component={AboutAppScreen} /> {/* Tambahkan halaman baru */}
+      <Stack.Screen name="AccountSettings" component={AccountSettingsScreen} />
+      <Stack.Screen name="AboutApp" component={AboutAppScreen} /> 
     </Stack.Navigator>
   );
 };

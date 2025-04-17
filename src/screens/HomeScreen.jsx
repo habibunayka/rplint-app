@@ -1,40 +1,45 @@
 import React, { useRef } from "react";
-import { View, StyleSheet, ScrollView, Animated } from "react-native";
+import { View, StyleSheet, Animated, FlatList } from "react-native";
 import ProfileLayout from "../layouts/HomeLayout/ProfileLayout";
 import AttendanceTime from  "../layouts/HomeLayout/AttendanceTime";
-
-import colors from "../colors";
 import AttendanceCount from "../layouts/HomeLayout/AttendanceCount";
 import AttendanceCalendar from "../layouts/HomeLayout/AttendanceCalendar";
+import colors from "../colors";
 
 const HomeScreen = () => {
-    const scrollY = useRef(new Animated.Value(0)).current; 
+    const scrollY = useRef(new Animated.Value(0)).current;
 
     const opacity = scrollY.interpolate({
-        inputRange: [0, 150], 
+        inputRange: [0, 150],
         outputRange: [1, 0],
-        extrapolate: 'clamp', 
+        extrapolate: 'clamp',
     });
+
+    const dummyData = [{ key: 'dummy' }];
 
     return (
         <View style={styles.main}>
-            <Animated.View style={[styles.profileContainer, { opacity }]}> 
+            <Animated.View style={[styles.profileContainer, { opacity }]}>
                 <ProfileLayout />
             </Animated.View>
-            <ScrollView
+
+            <FlatList
+                data={dummyData}
+                renderItem={null}
+                keyExtractor={(item) => item.key}
                 contentContainerStyle={styles.scrollContainer}
-                scrollEventThrottle={16}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                     { useNativeDriver: false }
                 )}
-            >
-                <View style={styles.container}>
-                    <AttendanceTime/>
-                    <AttendanceCount/>
-                    <AttendanceCalendar/>
-                </View>
-            </ScrollView>
+                ListHeaderComponent={
+                    <View style={styles.container}>
+                        <AttendanceTime />
+                        <AttendanceCount />
+                        <AttendanceCalendar />
+                    </View>
+                }
+            />
         </View>
     );
 };
