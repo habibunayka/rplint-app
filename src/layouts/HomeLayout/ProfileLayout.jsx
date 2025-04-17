@@ -8,7 +8,7 @@ const ProfileLayout = ({}) => {
             <View style={styles.profileContainer}>
                 <View style={styles.circle}></View>
                 <View style={styles.profileInfo}>
-                    <Text style={styles.name}>Habibunayka Miftah Al-Rizqi</Text>
+                    <Text style={styles.name}>Muhammad Istiqlal Fajar S.</Text>
                     <Text style={styles.class}>XI RPL 2</Text>
                 </View>
             </View>
