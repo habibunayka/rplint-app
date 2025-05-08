@@ -1,32 +1,116 @@
 import React, { useState } from "react";
-import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Switch,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const SettingScreen = () => {
+  const navigation = useNavigation();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => !prev);
+  };
 
-  const settingsOptions = [
-    "Pengaturan Akun & Profil",
-    "Tentang Aplikasi"
+  const settingsSections = [
+    {
+      title: "Akun",
+      data: [
+        {
+          icon: "person-circle-outline",
+          label: "Profil & Akun",
+          onPress: () => navigation.navigate("AccountSettings"),
+        },
+      ],
+    },
+    {
+      title: "Umum",
+      data: [
+        {
+          icon: "information-circle-outline",
+          label: "Tentang Aplikasi",
+          onPress: () => navigation.navigate("AboutApp"),
+        },
+        {
+          icon: "moon-outline",
+          label: "Mode Gelap",
+          isSwitch: true,
+        },
+      ],
+    },
   ];
 
   return (
-    <View style={[styles.container, isDarkMode ? styles.darkContainer : styles.lightContainer]}>
-      <Text style={[styles.headerText, isDarkMode ? styles.darkText : styles.lightText]}>Pengaturan</Text>
-      
-      <View style={styles.settingsList}>
-        {settingsOptions.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.settingItem}>
-            <Text style={[styles.text, isDarkMode ? styles.darkText : styles.lightText]}>{item}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+    <View style={[styles.container, isDarkMode && styles.darkContainer]}>
+      {/* Tombol kembali */}
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Ionicons
+          name="arrow-back"
+          size={24}
+          color={isDarkMode ? "#fff" : "#333"}
+        />
+        <Text style={[styles.backText, isDarkMode && styles.darkText]}>Kembali</Text>
+      </TouchableOpacity>
 
-      <View style={styles.switchContainer}>
-        <Text style={[styles.text, isDarkMode ? styles.darkText : styles.lightText]}>Mode Gelap</Text>
-        <Switch value={isDarkMode} onValueChange={toggleTheme} />
-      </View>
+      <Text style={[styles.header, isDarkMode && styles.darkText]}>
+        Pengaturan
+      </Text>
+
+      <ScrollView>
+        {settingsSections.map((section, idx) => (
+          <View key={idx} style={styles.section}>
+            <Text
+              style={[
+                styles.sectionTitle,
+                isDarkMode && styles.darkTextSecondary,
+              ]}
+            >
+              {section.title}
+            </Text>
+            {section.data.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={item.onPress}
+                style={[
+                  styles.itemContainer,
+                  isDarkMode && styles.darkItemContainer,
+                ]}
+                activeOpacity={item.isSwitch ? 1 : 0.7}
+              >
+                <Ionicons
+                  name={item.icon}
+                  size={24}
+                  color={isDarkMode ? "#fff" : "#333"}
+                />
+                <Text
+                  style={[styles.itemLabel, isDarkMode && styles.darkText]}
+                >
+                  {item.label}
+                </Text>
+                {item.isSwitch ? (
+                  <Switch
+                    value={isDarkMode}
+                    onValueChange={toggleTheme}
+                    thumbColor={isDarkMode ? "#fff" : "#ccc"}
+                  />
+                ) : (
+                  <Ionicons
+                    name="chevron-forward"
+                    size={20}
+                    color={isDarkMode ? "#aaa" : "#999"}
+                  />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -34,50 +118,61 @@ const SettingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    alignSelf: "center",
-  },
-  settingsList: {
-    borderRadius: 10,
-    overflow: "hidden",
-    width: "100%",
-  },
-  settingItem: {
-    paddingVertical: 15,
+    backgroundColor: "#f2f2f2",
+    paddingTop: 50,
     paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-    backgroundColor: "#f9f9f9",
-  },
-  switchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: 30,
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: "#f9f9f9",
-  },
-  text: {
-    fontSize: 18,
-  },
-  lightContainer: {
-    backgroundColor: "#ffffff",
   },
   darkContainer: {
-    backgroundColor: "#121212",
+    backgroundColor: "#1c1c1e",
   },
-  lightText: {
-    color: "#000",
+  header: {
+    fontSize: 26,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#333",
   },
   darkText: {
     color: "#fff",
+  },
+  darkTextSecondary: {
+    color: "#ccc",
+  },
+  section: {
+    marginBottom: 30,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 10,
+    color: "#666",
+  },
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  darkItemContainer: {
+    backgroundColor: "#2c2c2e",
+  },
+  itemLabel: {
+    flex: 1,
+    fontSize: 16,
+    marginLeft: 15,
+    color: "#333",
+  },
+  backButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  backText: {
+    marginLeft: 5,
+    fontSize: 16,
+    color: "#333",
   },
 });
 

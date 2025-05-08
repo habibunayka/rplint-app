@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexDirection: "row",
         marginTop: 20,
+        marginLeft: 20,
     },
     card: {
         width: "100%",
