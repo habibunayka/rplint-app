@@ -10,33 +10,38 @@ const AboutAppScreen = () => {
     <ScrollView contentContainerStyle={styles.container}>
       {/* Tombol Kembali */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back-outline" size={24} color="white" />
+        <Icon name="arrow-back-outline" size={24} color="black" />
       </TouchableOpacity>
 
       <Image
-        source={{ uri: 'https://ui-avatars.com/api/?name=APP&background=0D8ABC&color=fff' }}
+        source={{ uri: 'https://avatars.githubusercontent.com/u/0?v=4' }}
         style={styles.logo}
       />
-      <Text style={styles.appName}>My School App</Text>
+      <Text style={styles.appName}>RPLint App</Text>
       <Text style={styles.version}>Versi 1.0.0</Text>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Tentang Aplikasi</Text>
         <Text style={styles.description}>
-          Aplikasi ini dirancang untuk memudahkan siswa dalam mengakses informasi penting seperti
-          pengumuman, presensi, jadwal, dan pengaturan akun. Dengan tampilan modern dan fitur yang
-          intuitif, aplikasi ini akan membantu kegiatan sekolah jadi lebih efisien dan praktis.
+        Absensi Siswa Berbasis Fingerprint adalah aplikasi yang dirancang untuk mempermudah proses
+        pencatatan kehadiran siswa secara otomatis dan akurat menggunakan teknologi sidik jari (fingerprint).
+        Dengan sistem ini, setiap siswa cukup menempelkan jarinya pada alat fingerprint untuk mencatat kehadirannya.
+
+        Aplikasi ini terintegrasi langsung dengan database sekolah, sehingga data kehadiran tersimpan secara real-time
+        dan dapat diakses oleh guru, wali kelas, maupun pihak administrasi sekolah. Fitur ini membantu dalam mengurangi kecurangan absensi,
+        mempercepat rekapitulasi data, dan meningkatkan kedisiplinan siswa.
         </Text>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Dikembangkan oleh</Text>
-        <Text style={styles.developer}>Muhammad Istiqlal Fajar S.</Text>
+        <Text style={styles.developer}>Muhammad Istiqlal Fajar S. (Front End Developer)</Text>
+        <Text style={styles.developer}>Habbibunayka Miftah A.R. (Full Stack Developer)</Text>
       </View>
 
       <View style={styles.section}>
         <Icon name="school-outline" size={20} color="#888" />
-        <Text style={styles.footer}>© 2025 SMK Negeri Contoh. All rights reserved.</Text>
+        <Text style={styles.footer}>© 2025 SMK Negeri 1 Cibinong. All rights reserved.</Text>
       </View>
     </ScrollView>
   );
@@ -47,7 +52,7 @@ export default AboutAppScreen;
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#121212',
+    backgroundColor: '#fff',
     padding: 20,
     alignItems: 'center',
     paddingTop: 60,
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
   },
   version: {
     fontSize: 14,
@@ -81,17 +86,17 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: 'white',
+    color: 'black',
     marginBottom: 10,
   },
   description: {
-    color: '#ccc',
-    fontSize: 15,
+    color: 'black',
+    fontSize: 13,
     lineHeight: 22,
   },
   developer: {
-    fontSize: 16,
-    color: '#ccc',
+    fontSize: 13,
+    color: '#333',
   },
   footer: {
     fontSize: 13,

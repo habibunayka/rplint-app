@@ -3,9 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   Animated,
   Dimensions,
+  Easing,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import colors from "../../colors.js";
@@ -31,23 +32,48 @@ const mataPelajaranData = [
 const AttendanceHistory = () => {
   const [selectedTab, setSelectedTab] = useState("checkin");
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const translateX = useRef(new Animated.Value(30)).current;
+  const translateX = useRef(new Animated.Value(15)).current; // reduced distance for better feel
+  const scaleCheckIn = useRef(new Animated.Value(1)).current;
+  const scalePelajaran = useRef(new Animated.Value(1)).current;
   const navigation = useNavigation();
 
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 300,
+        duration: 200, // shorter duration
+        easing: Easing.linear, // simpler easing for performance
         useNativeDriver: true,
       }),
       Animated.timing(translateX, {
         toValue: 0,
-        duration: 300,
+        duration: 200, // shorter duration
+        easing: Easing.linear,
         useNativeDriver: true,
       }),
     ]).start();
   }, [selectedTab]);
+
+  const handleTabPress = (tabName, scaleRef) => {
+    Animated.sequence([
+      Animated.timing(scaleRef, {
+        toValue: 0.97, // less shrinking for faster feel
+        duration: 70,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleRef, {
+        toValue: 1,
+        duration: 70,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      fadeAnim.setValue(0);
+      translateX.setValue(15);
+      setSelectedTab(tabName);
+    });
+  };
 
   const renderCheckInOutTable = () => (
     <View style={styles.tableContainer}>
@@ -66,12 +92,11 @@ const AttendanceHistory = () => {
           </View>
         ))}
       </View>
-      <TouchableOpacity
-        style={styles.detailButton}
-        onPress={() => navigation.navigate("MonthlyCheckin")}
-      >
-        <Text style={styles.detailButtonText}>Lihat Riwayat Bulanan</Text>
-      </TouchableOpacity>
+      <TouchableWithoutFeedback onPress={() => navigation.navigate("MonthlyCheckin")}>
+        <View style={styles.detailButton}>
+          <Text style={styles.detailButtonText}>Lihat Riwayat Bulanan</Text>
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 
@@ -98,30 +123,33 @@ const AttendanceHistory = () => {
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, selectedTab === "checkin" && styles.activeTab]}
-          onPress={() => {
-            fadeAnim.setValue(0);
-            translateX.setValue(30);
-            setSelectedTab("checkin");
-          }}
-        >
-          <Text style={[styles.tabText, selectedTab === "checkin" && styles.activeTabText]}>
-            Check-In & Out
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, selectedTab === "pelajaran" && styles.activeTab]}
-          onPress={() => {
-            fadeAnim.setValue(0);
-            translateX.setValue(30);
-            setSelectedTab("pelajaran");
-          }}
-        >
-          <Text style={[styles.tabText, selectedTab === "pelajaran" && styles.activeTabText]}>
-            Mata Pelajaran
-          </Text>
-        </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={() => handleTabPress("checkin", scaleCheckIn)}>
+          <Animated.View
+            style={[
+              styles.tab,
+              selectedTab === "checkin" && styles.activeTab,
+              { transform: [{ scale: scaleCheckIn }] },
+            ]}
+          >
+            <Text style={[styles.tabText, selectedTab === "checkin" && styles.activeTabText]}>
+              Check-In & Out
+            </Text>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => handleTabPress("pelajaran", scalePelajaran)}>
+          <Animated.View
+            style={[
+              styles.tab,
+              selectedTab === "pelajaran" && styles.activeTab,
+              { transform: [{ scale: scalePelajaran }] },
+            ]}
+          >
+            <Text style={[styles.tabText, selectedTab === "pelajaran" && styles.activeTabText]}>
+              Mata Pelajaran
+            </Text>
+          </Animated.View>
+        </TouchableWithoutFeedback>
       </View>
 
       <Animated.View

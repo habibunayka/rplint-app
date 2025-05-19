@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Animated, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import NotificationScreen from '../screens/NotificationScreen';
@@ -12,8 +11,9 @@ import AccountSettingsScreen from '../screens/AccountSettingsScreen';
 import AboutAppScreen from '../screens/AboutAppScreen';
 import EditProfilScreen from "../screens/EditProfilScreen";
 import MonthlyCheckin from "../screens/MonthlyCheckin";
-import colors from '../colors';
 import AttendanceHistory from '../layouts/HomeLayout/AttendanceCalendar';
+import SubjectScreen from "../screens/SubjectScreen"; 
+import colors from '../colors'; 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -50,7 +50,7 @@ const CustomTabButton = ({ children, onPress, isFocused, routeName }) => {
         backgroundColor: '#fff',
         borderRadius: 50,
         padding: 3,
-        marginHorizontal: '10%',
+        marginHorizontal: '21',
         paddingHorizontal: 5,
         alignItems: 'center',
       }}>
@@ -81,9 +81,11 @@ const MainTabNavigator = () => (
         borderTopColor: 'transparent',
         zIndex: 2,
         height: 60,
+        paddingHorizontal: 0,
       },
       tabBarItemStyle: {
-        paddingHorizontal: 20,
+        paddingHorizontal: 0,
+        flex: 1,
       },
       tabBarShowLabel: false,
       tabBarIcon: ({ color, size, focused }) => {
@@ -91,6 +93,7 @@ const MainTabNavigator = () => (
         if (route.name === 'Home') iconName = focused ? 'home' : 'home-outline';
         else if (route.name === 'Notification') iconName = focused ? 'notifications' : 'notifications-outline';
         else if (route.name === 'Settings') iconName = focused ? 'settings' : 'settings-outline';
+        else if (route.name === 'Subjects') iconName = focused ? 'book' : 'book-outline';
 
         return <Icon name={iconName} size={size} color={color} />;
       },
@@ -106,6 +109,7 @@ const MainTabNavigator = () => (
     })}
   >
     <Tab.Screen name="Home" component={HomeScreen} />
+    <Tab.Screen name="Subjects" component={SubjectScreen} />
     <Tab.Screen name="Notification" component={NotificationScreen} />
     <Tab.Screen name="Settings" component={SettingScreen} />
   </Tab.Navigator>
@@ -118,7 +122,7 @@ const AppNavigator = () => (
     <Stack.Screen name="AccountSettings" component={AccountSettingsScreen} />
     <Stack.Screen name="AboutApp" component={AboutAppScreen} />
     <Stack.Screen name="EditProfilScreen" component={EditProfilScreen} />
-    <Stack.Screen name="MonthlyCheckin" component={MonthlyCheckin} options={{ title: "Riwayat Bulanan" }} />
+    <Stack.Screen name="MonthlyCheckin" component={MonthlyCheckin} />
     <Stack.Screen name="AttendanceCalendar" component={AttendanceHistory} />
   </Stack.Navigator>
 );

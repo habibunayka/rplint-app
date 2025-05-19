@@ -48,16 +48,6 @@ const SettingScreen = () => {
 
   return (
     <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-      {/* Tombol kembali */}
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Ionicons
-          name="arrow-back"
-          size={24}
-          color={isDarkMode ? "#fff" : "#333"}
-        />
-        <Text style={[styles.backText, isDarkMode && styles.darkText]}>Kembali</Text>
-      </TouchableOpacity>
-
       <Text style={[styles.header, isDarkMode && styles.darkText]}>
         Pengaturan
       </Text>
@@ -162,16 +152,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     marginLeft: 15,
-    color: "#333",
-  },
-  backButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  backText: {
-    marginLeft: 5,
-    fontSize: 16,
     color: "#333",
   },
 });
