@@ -1,166 +1,181 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 
 const schedule = [
   {
-    day: 'Senin',
+    day: "Senin",
     general: [
-      { subject: 'Matematika', time: '08:00 - 09:30' },
-      { subject: 'Bahasa Indonesia', time: '09:30 - 11:00' },
-      { subject: 'PKN', time: '11:00 - 12:30' },
+      { subject: "Matematika", time: "07:00 - 08:00" },
+      { subject: "Bahasa Inggris", time: "08:00 - 09:00" },
     ],
     major: [
-      { subject: 'Pemograman Website', time: '13:00 - 14:30' },
+      { subject: "Pemrograman Dasar", time: "09:00 - 10:00" },
+      { subject: "Jaringan Komputer", time: "10:00 - 11:00" },
     ],
   },
   {
-    day: 'Selasa',
+    day: "Selasa",
     general: [
-      { subject: 'Bahasa Inggris', time: '08:00 - 09:30' },
-      { subject: 'Pendidikan Agama', time: '09:30 - 11:00' },
+      { subject: "Fisika", time: "07:00 - 08:00" },
+      { subject: "Kimia", time: "08:00 - 09:00" },
     ],
     major: [
-      { subject: 'IT-S', time: '11:00 - 12:30' },
-      { subject: 'Basis Data', time: '13:00 - 14:30' },
+      { subject: "Basis Data", time: "09:00 - 10:00" },
+      { subject: "Sistem Operasi", time: "10:00 - 11:00" },
     ],
   },
-  {
-    day: 'Rabu',
-    general: [
-      { subject: 'Sejarah', time: '08:00 - 09:30' },
-      { subject: 'Seni Budaya', time: '09:30 - 11:00' },
-    ],
-    major: [
-      { subject: 'IT-S', time: '11:00 - 12:30' },
-    ],
-  },
-  {
-    day: 'Kamis',
-    general: [
-      { subject: 'Matematika', time: '08:00 - 09:30' },
-      { subject: 'PJOK', time: '09:30 - 11:00' },
-    ],
-    major: [
-      { subject: 'PKK', time: '11:00 - 12:30' },
-      { subject: 'Bahasa Jepang', time: '13:00 - 14:30' },
-    ],
-  },
-  {
-    day: 'Jumat',
-    general: [
-      { subject: 'Bahasa Indonesia', time: '08:00 - 09:30' },
-    ],
-    major: [
-      { subject: 'IT-S', time: '09:30 - 11:00' },
-      { subject: 'Bahasa Jepang', time: '11:00 - 12:30' },
-    ],
-  },
+  // ... data jadwal lainnya
 ];
 
 const SubjectScreen = () => {
+  const [selectedTab, setSelectedTab] = useState("general");
+
+  const renderRow = (item) => {
+    const data = item[selectedTab];
+    return data.map((row, i) => (
+      <View
+        key={i}
+        style={[
+          styles.row,
+          i % 2 === 0 ? styles.evenRow : null,
+        ]}
+      >
+        <Text style={[styles.cell, styles.subjectCell, { flex: 1 }]}>
+          {row.subject}
+        </Text>
+        <Text style={[styles.cell, styles.timeCell, { flex: 1 }]}>
+          {row.time}
+        </Text>
+      </View>
+    ));
+  };
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
       <Text style={styles.title}>Jadwal Pelajaran Bulanan</Text>
-      {schedule.map((item, index) => {
-        const maxRows = Math.max(item.general.length, item.major.length);
-        return (
-          <View key={index} style={styles.dayContainer}>
-            <Text style={styles.dayTitle}>{item.day}</Text>
-            <View style={styles.table}>
-              <View style={[styles.row, styles.headerRow]}>
-                <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>Pelajaran Umum</Text>
-                <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>Waktu</Text>
-                <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>Pelajaran Jurusan</Text>
-                <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>Waktu</Text>
-              </View>
-              {Array.from({ length: maxRows }).map((_, i) => (
-                <View key={i} style={[styles.row, i % 2 === 0 ? styles.evenRow : null]}>
-                  <Text style={[styles.cell, { flex: 1 }]}>
-                    {item.general[i] ? item.general[i].subject : '-'}
-                  </Text>
-                  <Text style={[styles.cell, { flex: 1 }]}>
-                    {item.general[i] ? item.general[i].time : '-'}
-                  </Text>
-                  <Text style={[styles.cell, { flex: 1 }]}>
-                    {item.major[i] ? item.major[i].subject : '-'}
-                  </Text>
-                  <Text style={[styles.cell, { flex: 1 }]}>
-                    {item.major[i] ? item.major[i].time : '-'}
-                  </Text>
-                </View>
-              ))}
+
+      <View style={styles.toggleContainer}>
+        <TouchableOpacity
+          style={[styles.toggleButton, selectedTab === "general" && styles.activeButton]}
+          onPress={() => setSelectedTab("general")}
+        >
+          <Text
+            style={[styles.toggleText, selectedTab === "general" && styles.activeText]}
+          >
+            Umum
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.toggleButton, selectedTab === "major" && styles.activeButton]}
+          onPress={() => setSelectedTab("major")}
+        >
+          <Text
+            style={[styles.toggleText, selectedTab === "major" && styles.activeText]}
+          >
+            Produktif
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {schedule.map((item, index) => (
+        <View key={index} style={styles.dayContainer}>
+          <Text style={styles.dayTitle}>{item.day}</Text>
+          <View style={styles.table}>
+            <View style={[styles.row, styles.headerRow]}>
+              <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>Pelajaran</Text>
+              <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>Waktu</Text>
             </View>
+            {renderRow(item)}
           </View>
-        );
-      })}
+        </View>
+      ))}
     </ScrollView>
   );
 };
 
-export default SubjectScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fefefe',
+    backgroundColor: "#fefefe",
     padding: 16,
   },
   title: {
     fontSize: 26,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 24,
-    color: '#0077b6',
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 16,
+    color: "#0077b6",
+  },
+  toggleContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  toggleButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#0077b6",
+    marginHorizontal: 10,
+    backgroundColor: "#fff",
+  },
+  activeButton: {
+    backgroundColor: "#0077b6",
+  },
+  toggleText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#0077b6",
+  },
+  activeText: {
+    color: "#fff",
   },
   dayContainer: {
-    marginBottom: 24,
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 5,
+    marginBottom: 20,
   },
   dayTitle: {
     fontSize: 20,
-    fontWeight: '700',
-    color: '#023e8a',
-    marginBottom: 12,
-    borderBottomWidth: 2,
-    borderBottomColor: '#0077b6',
-    paddingBottom: 6,
+    fontWeight: "700",
+    color: "#333",
+    marginBottom: 8,
   },
   table: {
     borderWidth: 1,
-    borderColor: '#dee2e6',
-    borderRadius: 8,
-    overflow: 'hidden',
+    borderColor: "#0077b6",
+    borderRadius: 12,
+    overflow: "hidden",
   },
   row: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: '#dee2e6',
-    paddingVertical: 10,
-    paddingHorizontal: 8,
+    flexDirection: "row",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
   },
   evenRow: {
-    backgroundColor: '#f8f9fa',
-  },
-  headerRow: {
-    backgroundColor: '#0077b6',
+    backgroundColor: "#e8f4ff",
   },
   cell: {
-    fontSize: 14,
-    color: '#333',
-    paddingHorizontal: 8,
-    textAlignVertical: 'center',
+    fontSize: 16,
+  },
+  subjectCell: {
+    fontWeight: "600",
+  },
+  timeCell: {
+    textAlign: "right",
+  },
+  headerRow: {
+    backgroundColor: "#0077b6",
   },
   headerCell: {
-    fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center',
+    color: "#fff",
+    fontWeight: "700",
   },
 });
 
+export default SubjectScreen;

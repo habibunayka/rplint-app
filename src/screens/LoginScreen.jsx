@@ -19,11 +19,12 @@ import colors from "../colors";
 import { StatusBar } from "expo-status-bar";
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// ...import tetap sama
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  const [nis, setNis] = useState("");
   const [password, setPassword] = useState("");
 
-  const emailLabelAnim = useState(new Animated.Value(0))[0];
+  const nisLabelAnim = useState(new Animated.Value(0))[0];
   const passwordLabelAnim = useState(new Animated.Value(0))[0];
 
   const handleFocus = (labelAnim) => {
@@ -45,8 +46,8 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Email dan Password tidak boleh kosong");
+    if (!nis || !password) {
+      Alert.alert("Error", "NIS dan Password tidak boleh kosong");
       return;
     }
     navigation.replace("Main");
@@ -67,7 +68,6 @@ const LoginScreen = ({ navigation }) => {
     }),
   });
 
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={styles.width}>
       <KeyboardAvoidingView
@@ -82,24 +82,24 @@ const LoginScreen = ({ navigation }) => {
           style={styles.width}
         >
           <Image
-            source={require("../../assets/icon.png")} 
+            source={require("../../assets/icon.png")}
             style={styles.logo}
           />
           <Text style={styles.title}>Selamat Datang!</Text>
           <Text style={styles.subtitle}>Silakan login ke akun anda</Text>
 
           <View style={styles.inputContainer}>
-            <Animated.Text style={[styles.label, getLabelStyle(emailLabelAnim)]}>
-              Email
+            <Animated.Text style={[styles.label, getLabelStyle(nisLabelAnim)]}>
+              NIS
             </Animated.Text>
             <TextInput
               style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
+              value={nis}
+              onChangeText={setNis}
+              keyboardType="numeric"
               autoCapitalize="none"
-              onFocus={() => handleFocus(emailLabelAnim)}
-              onBlur={() => handleBlur(emailLabelAnim, email)}
+              onFocus={() => handleFocus(nisLabelAnim)}
+              onBlur={() => handleBlur(nisLabelAnim, nis)}
             />
           </View>
 

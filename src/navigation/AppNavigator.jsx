@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Animated, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen';
@@ -9,14 +9,13 @@ import NotificationScreen from '../screens/NotificationScreen';
 import SettingScreen from '../screens/SettingScreen';
 import AccountSettingsScreen from '../screens/AccountSettingsScreen';
 import AboutAppScreen from '../screens/AboutAppScreen';
-import EditProfilScreen from "../screens/EditProfilScreen";
 import MonthlyCheckin from "../screens/MonthlyCheckin";
 import AttendanceHistory from '../layouts/HomeLayout/AttendanceCalendar';
 import SubjectScreen from "../screens/SubjectScreen"; 
 import colors from '../colors'; 
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const CustomTabButton = ({ children, onPress, isFocused, routeName }) => {
   const scale = useRef(new Animated.Value(1)).current;
@@ -121,7 +120,6 @@ const AppNavigator = () => (
     <Stack.Screen name="Main" component={MainTabNavigator} />
     <Stack.Screen name="AccountSettings" component={AccountSettingsScreen} />
     <Stack.Screen name="AboutApp" component={AboutAppScreen} />
-    <Stack.Screen name="EditProfilScreen" component={EditProfilScreen} />
     <Stack.Screen name="MonthlyCheckin" component={MonthlyCheckin} />
     <Stack.Screen name="AttendanceCalendar" component={AttendanceHistory} />
   </Stack.Navigator>

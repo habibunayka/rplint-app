@@ -1,10 +1,8 @@
 // App.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from "@react-navigation/stack";
 import AppNavigator from './src/navigation/AppNavigator';
-import EditProfilScreen from "./src/screens/EditProfilScreen";
-
+import 'react-native-gesture-handler';
 
 export default function App() {
   return (
@@ -13,4 +11,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-

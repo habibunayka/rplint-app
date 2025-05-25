@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -12,11 +12,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const SettingScreen = () => {
   const navigation = useNavigation();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev);
-  };
 
   const settingsSections = [
     {
@@ -35,67 +30,28 @@ const SettingScreen = () => {
         {
           icon: "information-circle-outline",
           label: "Tentang Aplikasi",
-          onPress: () => navigation.navigate("AboutApp"),
-        },
-        {
-          icon: "moon-outline",
-          label: "Mode Gelap",
-          isSwitch: true,
+          onPress: () => alert("Aplikasi versi 1.0"),
         },
       ],
     },
   ];
 
   return (
-    <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-      <Text style={[styles.header, isDarkMode && styles.darkText]}>
-        Pengaturan
-      </Text>
-
+    <View style={styles.container}>
+      <Text style={styles.header}>Pengaturan</Text>
       <ScrollView>
         {settingsSections.map((section, idx) => (
           <View key={idx} style={styles.section}>
-            <Text
-              style={[
-                styles.sectionTitle,
-                isDarkMode && styles.darkTextSecondary,
-              ]}
-            >
-              {section.title}
-            </Text>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
             {section.data.map((item, index) => (
               <TouchableOpacity
                 key={index}
                 onPress={item.onPress}
-                style={[
-                  styles.itemContainer,
-                  isDarkMode && styles.darkItemContainer,
-                ]}
-                activeOpacity={item.isSwitch ? 1 : 0.7}
+                style={styles.itemContainer}
               >
-                <Ionicons
-                  name={item.icon}
-                  size={24}
-                  color={isDarkMode ? "#fff" : "#333"}
-                />
-                <Text
-                  style={[styles.itemLabel, isDarkMode && styles.darkText]}
-                >
-                  {item.label}
-                </Text>
-                {item.isSwitch ? (
-                  <Switch
-                    value={isDarkMode}
-                    onValueChange={toggleTheme}
-                    thumbColor={isDarkMode ? "#fff" : "#ccc"}
-                  />
-                ) : (
-                  <Ionicons
-                    name="chevron-forward"
-                    size={20}
-                    color={isDarkMode ? "#aaa" : "#999"}
-                  />
-                )}
+                <Ionicons name={item.icon} size={24} color="#333" />
+                <Text style={styles.itemLabel}>{item.label}</Text>
+                <Ionicons name="chevron-forward" size={20} color="#999" />
               </TouchableOpacity>
             ))}
           </View>
@@ -112,20 +68,11 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 20,
   },
-  darkContainer: {
-    backgroundColor: "#1c1c1e",
-  },
   header: {
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 20,
     color: "#333",
-  },
-  darkText: {
-    color: "#fff",
-  },
-  darkTextSecondary: {
-    color: "#ccc",
   },
   section: {
     marginBottom: 30,
@@ -144,9 +91,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 10,
     marginBottom: 10,
-  },
-  darkItemContainer: {
-    backgroundColor: "#2c2c2e",
   },
   itemLabel: {
     flex: 1,
