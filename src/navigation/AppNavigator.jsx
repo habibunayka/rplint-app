@@ -81,10 +81,13 @@ const MainTabNavigator = () => (
         zIndex: 2,
         height: 60,
         paddingHorizontal: 0,
+        alignItems: 'center',
+        justifyContent: 'space-between'
       },
       tabBarItemStyle: {
         paddingHorizontal: 0,
         flex: 1,
+        
       },
       tabBarShowLabel: false,
       tabBarIcon: ({ color, size, focused }) => {
@@ -109,7 +112,7 @@ const MainTabNavigator = () => (
   >
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name="Subjects" component={SubjectScreen} />
-    <Tab.Screen name="Notification" component={NotificationScreen} />
+    {/* <Tab.Screen name="Notification" component={NotificationScreen} /> */}
     <Tab.Screen name="Settings" component={SettingScreen} />
   </Tab.Navigator>
 );

@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     shadowColor: "white",
     maxHeight: 120,
     marginTop: 30,
+
   },
   profileImage: {
     borderRadius: 50,
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
   },
   profileInfo: {
     marginLeft: 20,
+
   },
   name: {
     fontWeight: "900",
@@ -61,6 +63,7 @@ const styles = StyleSheet.create({
     color: "white",
     maxWidth: 280,
     flexWrap: "wrap",
+    maxWidth: 208
   },
   class: {
     fontWeight: "normal",

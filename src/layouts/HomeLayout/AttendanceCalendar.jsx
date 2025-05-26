@@ -123,7 +123,9 @@ const AttendanceHistory = () => {
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
-        <TouchableWithoutFeedback onPress={() => handleTabPress("checkin", scaleCheckIn)}>
+        <TouchableWithoutFeedback
+          onPress={selectedTab !== "checkin" ? () => handleTabPress("checkin", scaleCheckIn) : null}
+        >
           <Animated.View
             style={[
               styles.tab,
@@ -136,8 +138,10 @@ const AttendanceHistory = () => {
             </Text>
           </Animated.View>
         </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback onPress={() => handleTabPress("pelajaran", scalePelajaran)}>
+          
+        <TouchableWithoutFeedback
+          onPress={selectedTab !== "pelajaran" ? () => handleTabPress("pelajaran", scalePelajaran) : null}
+        >
           <Animated.View
             style={[
               styles.tab,
@@ -150,6 +154,7 @@ const AttendanceHistory = () => {
             </Text>
           </Animated.View>
         </TouchableWithoutFeedback>
+
       </View>
 
       <Animated.View

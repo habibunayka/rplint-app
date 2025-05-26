@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import color from "../colors";
 
 const schedule = [
   {
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 16,
-    color: "#0077b6",
+    color: color.primary,
   },
   toggleContainer: {
     flexDirection: "row",
@@ -122,17 +123,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#0077b6",
+    borderColor: color.primary,
     marginHorizontal: 10,
     backgroundColor: "#fff",
   },
   activeButton: {
-    backgroundColor: "#0077b6",
+    backgroundColor: color.primary,
   },
   toggleText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#0077b6",
+    color: color.primary,
   },
   activeText: {
     color: "#fff",
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   },
   table: {
     borderWidth: 1,
-    borderColor: "#0077b6",
+    borderColor: color.primary,
     borderRadius: 12,
     overflow: "hidden",
   },
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   headerRow: {
-    backgroundColor: "#0077b6",
+    backgroundColor: color.primary,
   },
   headerCell: {
     color: "#fff",
