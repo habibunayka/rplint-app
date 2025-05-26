@@ -52,7 +52,7 @@ const SubjectScreen = () => {
   };
 
   return (
-    <LinearGradient colors={["#f0f0f0", "#f0f0f0"]} style={styles.gradient}>
+    <LinearGradient colors={["#AEE1FF", "#60B5FF"]} style={styles.gradient}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Jadwal Pelajaran Bulanan</Text>
 
@@ -99,7 +99,7 @@ const SubjectScreen = () => {
                 <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>
                   Pelajaran
                 </Text>
-                <Text style={[styles.cell, styles.headerCell, { flex: 0.3 }]}>
+                <Text style={[styles.cell, styles.headerCell, { flex: 0.4, textAlign: "center" }]}>
                   Waktu
                 </Text>
               </View>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 16,
+    marginBottom: 16,   
     color: color.primary,
   },
   toggleContainer: {
@@ -139,18 +139,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: color.primary,
     marginHorizontal: 10,
-    backgroundColor: "#fff",
+    backgroundColor: color.primary,
   },
   activeButton: {
-    backgroundColor: color.primary,
+    backgroundColor: "#fff",
   },
   toggleText: {
     fontSize: 16,
     fontWeight: "600",
-    color: color.primary,
+    color: "#fff",
   },
   activeText: {
-    color: "#fff",
+    color: color.primary,
   },
   dayContainer: {
     marginBottom: 20,
