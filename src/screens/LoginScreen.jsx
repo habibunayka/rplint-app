@@ -13,16 +13,28 @@ import {
   Animated,
   Image,
   ScrollView,
-  Dimensions
+  Dimensions,
+  ActivityIndicator, // <- Tambahin ini
 } from "react-native";
 import colors from "../colors"; 
 import { StatusBar } from "expo-status-bar";
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import api from '../api/index.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// ...import tetap sama
 const LoginScreen = ({ navigation }) => {
+  useEffect(() => {
+    const checkLogin = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        navigation.replace("Main");
+      }
+    };
+    checkLogin();
+  }, []);
+
   const [nis, setNis] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const nisLabelAnim = useState(new Animated.Value(0))[0];
   const passwordLabelAnim = useState(new Animated.Value(0))[0];
@@ -45,12 +57,28 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!nis || !password) {
       Alert.alert("Error", "NIS dan Password tidak boleh kosong");
       return;
     }
-    navigation.replace("Main");
+
+    try {
+      setIsLoading(true); 
+
+      const response = await api.post('/app/login', { nis, password });
+
+      const token = response.data.token;
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+
+      setIsLoading(false);
+      navigation.replace("Main");
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+      Alert.alert("Login Gagal", error.response?.data?.message || "Cek NIS/Password");
+      setIsLoading(false); 
+    }
   };
 
   const getLabelStyle = (labelAnim) => ({
@@ -117,8 +145,12 @@ const LoginScreen = ({ navigation }) => {
             />
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Login</Text>
+          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Login</Text>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.forgotPassword}>
@@ -130,6 +162,7 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
+
 const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
@@ -138,7 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: colors.primary,
-    // minHeight: height,
+    minHeight: height,
   },
   scrollContent: {
     flexGrow: 1,
