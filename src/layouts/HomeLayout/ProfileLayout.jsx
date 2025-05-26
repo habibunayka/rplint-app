@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ProfileLayout = () => {
   const navigation = useNavigation();
@@ -17,6 +18,7 @@ const ProfileLayout = () => {
   };
 
   return (
+    <LinearGradient colors={['#0D92F4', '#1E90FF']} style={styles.gradient}>
     <View style={styles.main}>
       <View style={styles.profileContainer}>
         <TouchableOpacity onPress={handleImagePress}>
@@ -31,10 +33,14 @@ const ProfileLayout = () => {
         </View>
       </View>
     </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   profileContainer: {
     flexDirection: "row",
     width: "100%",

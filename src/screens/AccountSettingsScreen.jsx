@@ -7,61 +7,77 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import colors from '../colors';
+import * as Clipboard from 'expo-clipboard';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const biodata = [
+  { label: 'Nama', value: 'Muhammad Istiqlal Fajar S.' },
+  { label: 'Email', value: 'istiqlal@example.com' },
+  { label: 'NIS', value: '123456789' },
+  { label: 'NISN', value: '123456789' },
+  { label: 'Alamat', value: 'Puri Alam Kencana 2 Blok Q3 No 16 RT 4 / RW 8 Kecamatan Nanggewer Mekar, Cibinong, Bogor.' },
+  { label: 'Nomor Telepon', value: '089637383226' },
+];
 
 const AccountSettingsScreen = () => {
   const navigation = useNavigation();
 
+  const copyToClipboard = async (text, label) => {
+    await Clipboard.setStringAsync(text);
+    ToastAndroid.show(`${label} disalin`, ToastAndroid.SHORT);
+  };
+
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="#333" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Profil & Akun</Text>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* Foto Profil */}
-        <View style={styles.avatarContainer}>
-          <Image
-            source={{
-              uri: 'https://avatars.githubusercontent.com/u/0?v=4', // Ganti dengan URL profil pengguna
-            }}
-            style={styles.avatar}
-          />
-          <TouchableOpacity style={styles.editAvatarButton}>
-            <Icon name="photo-camera" size={18} color="#fff" />
+    <LinearGradient colors={['#0D92F4', '#ffffff']} style={styles.gradient}>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Icon name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
+          <Text style={styles.headerTitle}>Profil & Akun</Text>
         </View>
 
-        {/* Informasi Akun */}
-        <View style={styles.infoCard}>
-          <Text style={styles.label}>Nama</Text>
-          <Text style={styles.value}>Muhammad Istiqlal Fajar S.</Text>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.avatarContainer}>
+            <Image
+              source={{
+                uri: 'https://avatars.githubusercontent.com/u/0?v=4',
+              }}
+              style={styles.avatar}
+            />
+          </View>
 
-          <Text style={styles.label}>Email</Text>
-          <Text style={styles.value}>istiqlal@example.com</Text>
-        </View>
-
-        <TouchableOpacity style={styles.editButton}>
-          <Icon name="edit" size={20} color="#fff" />
-          <Text style={styles.editButtonText}>Edit Profil</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+          <View style={styles.infoCard}>
+            {biodata.map((item, index) => (
+              <View key={index} style={styles.infoRow}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.label}>{item.label}</Text>
+                  <Text style={styles.value}>{item.value}</Text>
+                </View>
+                <TouchableOpacity onPress={() => copyToClipboard(item.value, item.label)}>
+                  <Icon name="content-copy" size={20} color="#777" />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
 export default AccountSettingsScreen;
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
@@ -69,9 +85,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingTop: 15,
     paddingBottom: 10,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#eee',
+    // backgroundColor dihapus agar transparan dan ikut gradasi
   },
   backButton: {
     marginRight: 10,
@@ -79,14 +95,13 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fff',
   },
   container: {
     padding: 20,
     alignItems: 'center',
   },
   avatarContainer: {
-    position: 'relative',
     marginBottom: 30,
   },
   avatar: {
@@ -95,45 +110,26 @@ const styles = StyleSheet.create({
     borderRadius: 55,
     backgroundColor: '#ccc',
   },
-  editAvatarButton: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    backgroundColor: colors.primary || '#007bff',
-    padding: 6,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#fff',
-  },
   infoCard: {
     width: '100%',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f0f0f0',
     padding: 20,
     borderRadius: 12,
     marginBottom: 30,
     elevation: 1,
   },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
   label: {
     color: '#777',
     fontSize: 13,
-    marginTop: 10,
   },
   value: {
     color: '#333',
     fontSize: 16,
     fontWeight: '600',
-  },
-  editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.primary || '#007bff',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-  },
-  editButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    marginLeft: 10,
   },
 });

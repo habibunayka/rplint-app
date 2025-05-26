@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import color from "../colors";
+import { LinearGradient } from "expo-linear-gradient";
 
 const schedule = [
   {
@@ -31,7 +32,6 @@ const schedule = [
       { subject: "Sistem Operasi", time: "10:00 - 11:00" },
     ],
   },
-  // ... data jadwal lainnya
 ];
 
 const SubjectScreen = () => {
@@ -40,13 +40,7 @@ const SubjectScreen = () => {
   const renderRow = (item) => {
     const data = item[selectedTab];
     return data.map((row, i) => (
-      <View
-        key={i}
-        style={[
-          styles.row,
-          i % 2 === 0 ? styles.evenRow : null,
-        ]}
-      >
+      <View key={i} style={[styles.row, i % 2 === 0 ? styles.evenRow : null]}>
         <Text style={[styles.cell, styles.subjectCell, { flex: 1 }]}>
           {row.subject}
         </Text>
@@ -58,53 +52,73 @@ const SubjectScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
-      <Text style={styles.title}>Jadwal Pelajaran Bulanan</Text>
+    <LinearGradient colors={["#f0f0f0", "#f0f0f0"]} style={styles.gradient}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.title}>Jadwal Pelajaran Bulanan</Text>
 
-      <View style={styles.toggleContainer}>
-        <TouchableOpacity
-          style={[styles.toggleButton, selectedTab === "general" && styles.activeButton]}
-          onPress={() => setSelectedTab("general")}
-        >
-          <Text
-            style={[styles.toggleText, selectedTab === "general" && styles.activeText]}
+        <View style={styles.toggleContainer}>
+          <TouchableOpacity
+            style={[
+              styles.toggleButton,
+              selectedTab === "general" && styles.activeButton,
+            ]}
+            onPress={() => setSelectedTab("general")}
           >
-            Umum
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.toggleButton, selectedTab === "major" && styles.activeButton]}
-          onPress={() => setSelectedTab("major")}
-        >
-          <Text
-            style={[styles.toggleText, selectedTab === "major" && styles.activeText]}
+            <Text
+              style={[
+                styles.toggleText,
+                selectedTab === "general" && styles.activeText,
+              ]}
+            >
+              Umum
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.toggleButton,
+              selectedTab === "major" && styles.activeButton,
+            ]}
+            onPress={() => setSelectedTab("major")}
           >
-            Produktif
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {schedule.map((item, index) => (
-        <View key={index} style={styles.dayContainer}>
-          <Text style={styles.dayTitle}>{item.day}</Text>
-          <View style={styles.table}>
-            <View style={[styles.row, styles.headerRow]}>
-              <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>Pelajaran</Text>
-              <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>Waktu</Text>
-            </View>
-            {renderRow(item)}
-          </View>
+            <Text
+              style={[
+                styles.toggleText,
+                selectedTab === "major" && styles.activeText,
+              ]}
+            >
+              Produktif
+            </Text>
+          </TouchableOpacity>
         </View>
-      ))}
-    </ScrollView>
+
+        {schedule.map((item, index) => (
+          <View key={index} style={styles.dayContainer}>
+            <Text style={styles.dayTitle}>{item.day}</Text>
+            <View style={styles.table}>
+              <View style={[styles.row, styles.headerRow]}>
+                <Text style={[styles.cell, styles.headerCell, { flex: 1 }]}>
+                  Pelajaran
+                </Text>
+                <Text style={[styles.cell, styles.headerCell, { flex: 0.3 }]}>
+                  Waktu
+                </Text>
+              </View>
+              {renderRow(item)}
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  gradient: {
     flex: 1,
-    backgroundColor: "#fefefe",
+  },
+  content: {
     padding: 16,
+    paddingBottom: 100,
   },
   title: {
     fontSize: 26,
@@ -140,6 +154,14 @@ const styles = StyleSheet.create({
   },
   dayContainer: {
     marginBottom: 20,
+    backgroundColor: "#fff",
+    padding: 10,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   dayTitle: {
     fontSize: 20,
